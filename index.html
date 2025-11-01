@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Anna! 🎉</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@400;500;600;700&family=Crimson+Text:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Preparing something special for Anna...</p>
+        </div>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-indicator">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        ↑
+    </button>
+
+    <!-- Section Dots Navigation -->
+    <nav class="section-dots" id="sectionDots">
+        <div class="dot active" data-section="0"></div>
+        <div class="dot" data-section="1"></div>
+        <div class="dot" data-section="2"></div>
+        <div class="dot" data-section="3"></div>
+        <div class="dot" data-section="4"></div>
+        <div class="dot" data-section="5"></div>
+        <div class="dot" data-section="6"></div>
+        <div class="dot" data-section="7"></div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <canvas id="heroParticles" class="particles-canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title fade-in">Happy Birthday Anna! 🎉</h1>
+            <p class="hero-subtitle fade-in-delay">Click the present to unwrap your surprise 🎁</p>
+            
+            <div class="gift-container" id="giftContainer">
+                <div class="gift-box" id="giftBox">
+                    <div class="gift-lid">
+                        <div class="gift-bow"></div>
+                    </div>
+                    <div class="gift-body"></div>
+                </div>
+            </div>
+
+
+
+            <button class="start-journey-btn" id="startJourneyBtn" style="display: none;">
+                Start Your Journey ✨
+            </button>
+        </div>
+    </section>
+
+    <!-- Memory Lane Section -->
+    <section id="memoryLane" class="section memory-lane-section">
+        <div class="container">
+            <h2 class="section-title">💝 Memory Lane 💭</h2>
+            <p class="section-subtitle">Flip the cards to reveal special moments</p>
+            
+            <div class="memory-cards">
+                <div class="memory-card" data-aos="fade-up">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-icon">🌟</div>
+                            <h3>The Beginning</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>Wild Rift server. I messaged you asking to play. Little did I know, that message would change everything.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="memory-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-icon">😊</div>
+                            <h3>First Messages</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>8 hours of texting those first few days. It felt natural, like talking to someone I already knew my whole life.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="memory-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-icon">🎨</div>
+                            <h3>Every Day</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>Getting closer without trying. No pressure, no games. Just two people who clicked and couldn't stop talking.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="memory-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <div class="card-icon">💕</div>
+                            <h3>Late Night ARAMs</h3>
+                        </div>
+                        <div class="card-back">
+                            <p>Your voice in my ears at 3AM, both laughing at stupid plays. Nothing felt forced. Everything felt right.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mini Game Section -->
+    <section id="miniGame" class="section mini-game-section">
+        <div class="container">
+            <h2 class="section-title">❤️ Catch the Hearts! 💝</h2>
+            <p class="section-subtitle">Click the falling hearts to collect them</p>
+            
+            <div class="game-container">
+                <div class="game-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Score:</span>
+                        <span class="stat-value" id="gameScore">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Time:</span>
+                        <span class="stat-value" id="gameTime">45</span>
+                    </div>
+                </div>
+
+                <div class="game-canvas-container">
+                    <canvas id="gameCanvas" width="800" height="500"></canvas>
+                    <button class="game-start-btn" id="gameStartBtn">Start Game</button>
+                    <div class="game-over-message" id="gameOverMessage" style="display: none;">
+                        <h3>Amazing! 🎉</h3>
+                        <p class="game-final-score"></p>
+                        <p class="game-message">You've collected <span id="finalScore">0</span> hearts, just like all the happy moments we've shared!</p>
+                        <button class="game-restart-btn" id="gameRestartBtn">Play Again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Welcome Message Section -->
+    <section id="welcomeMessage" class="section welcome-section">
+        <canvas id="welcomeParticles" class="particles-canvas"></canvas>
+        <div class="container">
+            <div class="wishes-card" data-aos="zoom-in">
+                <div class="wishes-decoration">🎂</div>
+                <h2 class="wishes-title">A Special Message</h2>
+                <div class="wishes-content">
+                    <p class="typewriter" id="typewriterText"></p>
+                </div>
+                <div class="wishes-signature">With love 💕</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quiz Section -->
+    <section id="quiz" class="section quiz-section">
+        <div class="container">
+            <h2 class="section-title">💡 How Well Do You Know Us? 🤔</h2>
+            <p class="section-subtitle">Let's find out!</p>
+            
+            <div class="quiz-container">
+                <div class="quiz-progress">
+                    <div class="progress-fill" id="quizProgress"></div>
+                </div>
+                
+                <div class="quiz-content" id="quizContent">
+                    <div class="quiz-question">
+                        <h3 id="questionText"></h3>
+                        <div class="quiz-options" id="quizOptions"></div>
+                    </div>
+                </div>
+
+                <div class="quiz-result" id="quizResult" style="display: none;">
+                    <div class="result-icon">🎉</div>
+                    <h3 class="result-title">Quiz Complete!</h3>
+                    <p class="result-score">You scored <span id="quizFinalScore">0</span> out of 5!</p>
+                    <p class="result-message" id="quizResultMessage"></p>
+                    <button class="quiz-restart-btn" id="quizRestartBtn">Take Quiz Again</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Virtual Cake Section -->
+    <section id="virtualCake" class="section cake-section">
+        <div class="container">
+            <h2 class="section-title">🎂 Make a Wish! ✨</h2>
+            <p class="section-subtitle">Click the candles to blow them out</p>
+            
+            <div class="cake-container">
+                <div class="music-notes" id="musicNotes"></div>
+                
+                <div class="birthday-cake">
+                    <div class="candles-row">
+                        <div class="candle" data-candle="1">
+                            <div class="flame"></div>
+                            <div class="wick"></div>
+                            <div class="candle-body"></div>
+                        </div>
+                        <div class="candle" data-candle="2">
+                            <div class="flame"></div>
+                            <div class="wick"></div>
+                            <div class="candle-body"></div>
+                        </div>
+                        <div class="candle" data-candle="3">
+                            <div class="flame"></div>
+                            <div class="wick"></div>
+                            <div class="candle-body"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="cake-layer cake-top">
+                        <div class="frosting"></div>
+                    </div>
+                    <div class="cake-layer cake-middle">
+                        <div class="frosting"></div>
+                    </div>
+                    <div class="cake-layer cake-bottom"></div>
+                    <div class="cake-plate"></div>
+                </div>
+
+                <div class="wish-message" id="wishMessage" style="display: none;">
+                    <p>🎉 Your wish has been made! 🎉</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Why Amazing Section -->
+    <section id="reasons" class="section reasons-section">
+        <canvas id="reasonsParticles" class="particles-canvas"></canvas>
+        <div class="container">
+            <h2 class="section-title">✨ 8 Reasons Why You're Amazing 🌟</h2>
+            <div class="reasons-container" id="reasonsContainer">
+                <!-- Reasons will be dynamically added -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery Section -->
+    <section id="photoGallery" class="section photo-gallery-section">
+        <div class="container">
+            <h2 class="section-title">📸 Captured Moments 🖼️</h2>
+            <p class="section-subtitle">Click to view memories</p>
+
+            
+            <!-- Photo Gallery -->
+<div class="photos-grid">
+  <div class="photo-thumbnail">
+    <img src="images/photo1.jpg" alt="Memory 1">
+  </div>
+  <div class="photo-thumbnail">
+    <img src="images/photo2.jpg" alt="Memory 2">
+  </div>
+  <div class="photo-thumbnail">
+    <img src="images/photo3.jpg" alt="Memory 3">
+  </div>
+  <div class="photo-thumbnail">
+    <img src="images/photo4.jpg" alt="Memory 4">
+  </div>
+  <div class="photo-thumbnail">
+    <img src="images/photo10.png" alt="Memory 5">
+  </div>
+  <div class="photo-thumbnail">
+    <img src="images/photo6.jpg" alt="Memory 6">
+  </div>
+</div>
+
+<!-- Photo Modal (for expanded view) -->
+<div class="photo-modal" id="photoModal">
+  <span class="photo-modal-close">&times;</span>
+  <div class="photo-modal-content">
+    <img src="" alt="Full view">
+  </div>
+</div>
+
+        </div>
+    </section>
+
+    <!-- Message in a Bottle Section -->
+    <section id="messageBottle" class="section message-bottle-section">
+        <canvas id="bottleWaves" class="bottle-waves"></canvas>
+        <div class="container">
+            <h2 class="section-title">🌊 Message in a Bottle 💌</h2>
+            <p class="section-subtitle">Click to uncork the bottle</p>
+            
+            <div class="bottle-container" id="bottleContainer">
+                <div class="bottle" id="messageBottleItem">
+                    <div class="bottle-cork"></div>
+                    <div class="bottle-glass"></div>
+                    <div class="bottle-message">📜</div>
+                </div>
+                
+                <div class="message-scroll" id="messageScroll" style="display: none;">
+                    <div class="scroll-paper">
+                        <p>Dear Anna,
+
+I'm writing this to tell you something that's been sitting in my heart. When I found you on that Wild Rift server and sent that first message, I had no idea how much you'd change my life. 
+<br>
+Every 8-hour texting session, every game we played until our eyes closed involuntarily, every stupid joke that only we laugh at, it all mattered. It all still matters.
+<br>
+You made something impossible feel natural and effortless. That's rare, Anna. You're rare.
+<br>
+I know distance is hard. I know things are a little complicated. But I wanted you to know that no matter what happens, I'm grateful you exist. I'm grateful I found you.
+<br>
+Have the most beautiful birthday. You deserve it.
+<br>
+Forever yours,
+Ammar</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Balloon Messages Section -->
+    <section id="balloonMessages" class="section balloon-messages-section">
+        <div class="container">
+            <h2 class="section-title">🎈 Pop the Balloons 🎉</h2>
+            <p class="section-subtitle">Click each balloon to reveal a wish</p>
+            
+            <div class="balloons-container" id="balloonsContainer">
+                <!-- Balloons will be generated dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Love Letter Section -->
+    <section id="loveLetter" class="section love-letter-section">
+        <div class="container">
+            <h2 class="section-title">💌 A Letter For You 💕</h2>
+            <p class="section-subtitle">Click the envelope to open</p>
+            
+            <div class="envelope-container" id="envelopeContainer">
+                <div class="envelope" id="envelopeItem">
+                    <div class="wax-seal">A</div>
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-body"></div>
+                </div>
+                
+                <div class="letter-content" id="letterContent" style="display: none;">
+                    <div class="letter-paper">
+                        <p class="letter-text">Anna,
+<br>
+I wanted to write this down so you never forget it.
+<br>
+When you turned 22 today, I wasn't physically there to celebrate with you. But I was thinking about you all day. I was thinking about how rare you are, how effortless everything feels with you, and how grateful I am that you replied to that first message I sent you.
+<br>
+You asked me once if I thought we could work despite the distance. I told you I'm willing to wait as long as it takes. I meant that.
+<br>
+Even if we're in different continents, even if sometimes it's hard, you've changed my life in ways I didn't expect. You made me believe in connections that just <b>work</b>without trying.
+<br>
+So on your birthday, I want you to know: I see you. I appreciate you. And I'm so fucking glad you exist.
+<br>
+Happy Birthday to my rare, beautiful, one-of-a-kind person.
+<br>
+Always yours,
+Ammar</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Constellation Section -->
+    <section id="constellation" class="section constellation-section">
+        <div class="container">
+            <h2 class="section-title" style="color: #FFD700;">The Stars Align for You ✨</h2>
+            <canvas id="constellationCanvas" class="constellation-canvas"></canvas>
+            <p class="constellation-hint" style="color: #FFF;">Watch the stars spell your name in the night sky</p>
+        </div>
+    </section>
+
+    <!-- Rose Garden Section -->
+    <section id="roseGarden" class="section rose-garden-section">
+        <div class="container">
+            <h2 class="section-title">🌹 Garden of Wishes 🌺</h2>
+            <p class="section-subtitle">Watch the roses bloom as you scroll</p>
+            
+            <div class="roses-container" id="rosesContainer">
+                <!-- Roses will be generated dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Character Stats RPG Section -->
+    <section id="character-stats" class="section character-stats-section">
+        <div class="container">
+            <h2 class="section-title">🎮 Anna's Character Stats 💫</h2>
+            <p class="section-subtitle">Level up those amazing qualities!</p>
+            
+            <div class="stats-container">
+                <div class="level-display">
+                    <div class="level-badge">LEVEL</div>
+                    <div class="level-number">22</div>
+                    <div class="level-title">Birthday Royalty 👑</div>
+                </div>
+                
+                <div class="stats-bars">
+                    <div class="stat-bar">
+                        <label>Authenticity 💝</label>
+                        <div class="progress-bar-stat">
+                            <div class="progress-fill-stat kindness" data-value="999">999</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-bar">
+                        <label>Rare Connection 💫</label>
+                        <div class="progress-bar-stat">
+                            <div class="progress-fill-stat creativity" data-value="999">999</div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-bar">
+                        <label>Humor ✨</label>
+                        <div class="progress-bar-stat">
+                            <div class="progress-fill-stat smile-power" data-value="999">999</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Loot Box / Treasure Chest Section -->
+    <section id="loot-box" class="section loot-box-section">
+        <div class="container">
+            <h2 class="section-title">🎁 Mystery Treasure Chest! 💎</h2>
+            <p class="section-subtitle">Click the chest to discover your special compliment!</p>
+            
+            <div class="loot-container">
+                <div class="treasure-chest" id="treasureChest">
+                    <div class="chest-lid">🎁</div>
+                    <div class="chest-body">📦</div>
+                    <div class="chest-sparkles"></div>
+                </div>
+                <p class="chest-hint">Click to open!</p>
+                <div id="lootMessage" class="loot-message" style="display:none;"></div>
+                <div id="coinParticles" class="coin-particles"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Save Point (Zelda-style) Section -->
+    <section id="save-point" class="section save-point-section">
+        <div class="container">
+            <h2 class="section-title">💾 Progress Saved! ✨</h2>
+            <p class="section-subtitle">Your birthday journey has been saved</p>
+            
+            <div class="save-point-container">
+                <div class="fairy-heart">
+                    <span class="fairy">🧚‍♀️</span>
+                    <span class="heart">💖</span>
+                </div>
+                
+                <div class="stats-display">
+                    <div class="save-stat">
+                        <span class="stat-icon">📍</span>
+                        <span class="stat-label">Sections Visited:</span>
+                        <span class="stat-value" id="sectionsVisited">0</span><span>/18</span>
+                    </div>
+                    <div class="save-stat">
+                        <span class="stat-icon">🏆</span>
+                        <span class="stat-label">Achievements:</span>
+                        <span class="stat-value" id="achievementsCount">0</span><span>/10</span>
+                    </div>
+                    <div class="save-stat">
+                        <span class="stat-icon">❤️</span>
+                        <span class="stat-label">Hearts Score:</span>
+                        <span class="stat-value" id="savedGameScore">0</span>
+                    </div>
+                </div>
+                
+                <div class="save-particles" id="saveParticles"></div>
+                <div class="save-message">Progress Saved!</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements" class="section achievements-section">
+        <div class="container">
+            <h2 class="section-title">🏆 Achievements Unlocked 🎖️</h2>
+            <p class="section-subtitle">Track your journey through Anna's birthday celebration</p>
+            <div class="achievements-grid" id="achievementsGrid">
+                <!-- Achievements will be dynamically added -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Credits Sequence (Movie Style) -->
+    <section id="credits" class="section credits-section">
+        <div class="credits-container">
+            <div class="credits-scroll">
+                <h2 class="credits-main-title">🎬 CREDITS 🎬</h2>
+                
+                <div class="credit-spacer"></div>
+                
+                <p class="credit-role">Starring</p>
+                <h3 class="credit-name">Anna</h3>
+                <p class="credit-subtitle">The Birthday Star 🌟</p>
+                
+                <div class="credit-spacer-large"></div>
+                
+                <p class="credit-role">Created with Love by</p>
+                <h3 class="credit-name">Ammar</h3>
+                <p class="credit-subtitle">Yours Truly</p>
+                
+                <div class="credit-spacer-large"></div>
+                
+                <p class="credit-role">Inspired by</p>
+                <p class="credit-line">All our until-dawn gaming sessions</p>
+                <p class="credit-line">8-hour texting marathons</p>
+                <p class="credit-line">and a connection that defied the odds</p>
+                <p class="credit-line">Coffee (for keeping me awake while making this)</p>
+                
+                <div class="credit-spacer-large"></div>
+                
+                <p class="credit-role">Special Thanks To</p>
+                <p class="credit-line">- Wild Rift for bringing us together</p>
+                <p class="credit-line">- Every moment that felt effortless</p>
+                <p class="credit-line">- The universe for aligning us</p>
+                <p class="credit-line">- <b>Anna</b>, for being irreplaceable</p>
+
+                <div class="credit-spacer-large"></div>
+                
+                <p class="credit-role">Made with</p>
+                <p class="credit-line">❤️ Love</p>
+                <p class="credit-line">💫 Memories</p>
+                <p class="credit-line">🎮 Gaming</p>
+                <p class="credit-line">🌙 Late Nights</p>
+                
+                <div class="credit-spacer-huge"></div>
+                
+                <h2 class="credits-finale">HAPPY BIRTHDAY ANNA! 🎉</h2>
+                <p class="credits-year">~ 2025</p>
+                <p class="the-end">~ Our Story Continues ~</p>
+                
+                <div class="credit-spacer-huge"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final Message Section -->
+    <section id="finalMessage" class="section final-message-section">
+        <canvas id="finalConfetti" class="particles-canvas"></canvas>
+        <div class="container">
+            <div class="final-card" data-aos="zoom-in">
+                <div class="final-decoration">🎉💕✨</div>
+                <h2 class="final-title">Thank You For Being You, Anna</h2>
+                <p class="final-text">Hope this made you smile! 🎉💕</p>
+                <p class="final-subtext">Happy birthday Anna. I'm so glad you exist. 💫</p>
+                <button class="celebrate-again-btn" id="celebrateAgainBtn">
+                    Celebrate Again 🎊
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cursor Trail -->
+    <div id="cursorTrail" class="cursor-trail"></div>
+
+    <!-- Achievement Notifications -->
+    <div id="achievementContainer" class="achievement-container"></div>
+
+    <!-- Background Music - LOCAL FILE -->
+    <!-- IMPORTANT: Download https://cdn.pixabay.com/download/audio/2022/03/25/audio_4a465a110d.mp3 -->
+    <!-- Save as 'background-music.mp3' in the SAME folder as this HTML file -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="background-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Audio Controls -->
+    <div class="audio-controls">
+        <button id="musicToggle" class="audio-btn">
+            <span class="audio-icon">🔊</span>
+            <span class="audio-label">Music</span>
+        </button>
+        <button id="soundToggle" class="audio-btn">
+            <span class="audio-icon">🔊</span>
+            <span class="audio-label">Sounds</span>
+        </button>
+    </div>
+
+    <!-- Fireworks Canvas (Full Screen) -->
+    <canvas id="fireworksCanvas" class="fireworks-canvas"></canvas>
+
+    <!-- Photo Gallery Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev">&#8249;</button>
+        <button class="lightbox-nav lightbox-next" id="lightboxNext">&#8250;</button>
+        <img id="lightboxImage" class="lightbox-image" alt="Gallery photo">
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
