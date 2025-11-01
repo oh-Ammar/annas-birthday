@@ -66,30 +66,30 @@ const SoundSystem = {
 // Quiz Questions Data
 const quizQuestions = [
     {
-        question: "What makes Anna's smile unforgettable?",
-        options: ["Lights up rooms", "Genuinely warm", "Contagious joy", "All above"],
-        correct: 3
-    },
-    {
-        question: "Anna's perfect way to unwind?",
-        options: ["Reading with tea", "Movie night", "Nature walks", "Creative time"],
-        correct: 0
-    },
-    {
-        question: "What's Anna's superpower?",
-        options: ["Making people valued", "Finding joy", "Spreading kindness", "All above"],
-        correct: 3
-    },
-    {
-        question: "Anna's dream destination?",
-        options: ["Beach paradise", "Mountain retreat", "City exploration", "Cozy cabin"],
-        correct: 0
-    },
-    {
-        question: "What best describes Anna?",
-        options: ["Kind & caring", "Fun & adventurous", "Creative & inspiring", "All these"],
-        correct: 3
-    }
+    question: "Where did we meet?",
+    options: ["Through friends", "I don't remember", "Random", "Wild Rift discord"],
+    correct: 3
+  },
+  {
+    question: "What happened on our first day?",
+    options: ["One game", "We called", "8 hours of texting", "We planned to meet"],
+    correct: 2
+  },
+  {
+    question: "What made our connection feel different?",
+    options: ["We forced it", "It was natural and just felt right", "We took it slow", "We rushed it"],
+    correct: 1
+  },
+  {
+    question: "When were some of our best moments?",
+    options: ["During the day", "Playing Until Dawn and Detroit together", "In person only", "Rarely"],
+    correct: 1
+  },
+  {
+    question: "What describes us best?",
+    options: ["Two people on the same frequency", "Forced connection", "Complicated", "Casual"],
+    correct: 0
+  }
 ];
 
 // V6: 8 Reasons Why Anna is Amazing
@@ -810,7 +810,7 @@ function initMiniGame() {
 // Welcome Message - Typewriter Effect
 function initWelcomeMessage() {
     const typewriterElement = document.getElementById('typewriterText');
-    const message = "Dear Anna, Happy Birthday! \ud83c\udf82 May your day be filled with joy, laughter, and all the things that make you smile. Here's to another amazing year ahead! \ud83c\udf1f";
+    const message = "Hey Anna, happy birthday to you. I wanted to take a moment to tell you how much you really mean to me. From that first Wild Rift server message to staying up playing story games or wild rift together, you've been such a rare light in my life. I'm grateful for every moment we've shared, even across the distance. Here's to celebrating you today. 💕";
     let index = 0;
 
     const observer = new IntersectionObserver((entries) => {
