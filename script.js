@@ -216,6 +216,18 @@ function initializeApp() {
     initCreditsAnimation();
 }
 
+// MOBILE PERFORMANCE OPTIMIZATION
+const isMobileDevice = window.innerWidth <= 768;
+const MAX_PARTICLES = isMobileDevice ? 50 : 200; // Cap total particles
+const MAX_ACTIVE_ANIMATIONS = isMobileDevice ? 15 : 100;
+
+// Track active animations
+let activeAnimations = 0;
+
+function canCreateParticles() {
+  return activeAnimations < MAX_ACTIVE_ANIMATIONS;
+}
+
 // Hero Section - Gift Box
 function initHeroSection() {
     const giftBox = document.getElementById('giftBox');
@@ -917,11 +929,19 @@ function showQuizResults() {
 
     document.getElementById('quizResultMessage').textContent = messages[messageIndex];
 
-    // V8: VICTORY FANFARE
-    createRosePetalBurst(window.innerWidth / 2, window.innerHeight * 0.6, 100);
+    const isMobile = window.innerWidth <= 768;
+  
+  // V8 VICTORY FANFARE - OPTIMIZED FOR MOBILE
+  if (isMobile) {
+    // Mobile: minimal celebration
+    createRosePetalBurst(window.innerWidth / 2, window.innerHeight / 2, 20);
+    createHeartExplosion(window.innerWidth / 2, window.innerHeight / 2, 15);
+  } else {
+    // Desktop: full celebration
+    createRosePetalBurst(window.innerWidth / 2, window.innerHeight / 0.6, 100);
     createGoldenDustShimmer();
-    createHeartExplosion(window.innerWidth / 2, window.innerHeight * 0.6, 50);
-    
+    createHeartExplosion(window.innerWidth / 2, window.innerHeight / 0.6, 50);
+  }
     if (AppState.quizScore === 5) {
         unlockAchievement('quiz_master');
     }
@@ -1065,16 +1085,23 @@ function initFinalMessage() {
 // ===== ROMANTIC PARTICLE SYSTEMS =====
 
 function createRosePetalBurst(x, y, count) {
+    if (!canCreateParticles()) return; // Don't create if too many active
+  
+    const isMobile = window.innerWidth <= 768;
+    const actualCount = isMobile ? Math.ceil(count / 4) : count; // 75% reduction
+
     const colors = ['#DC143C', '#FA003F', '#8B0000', '#FF6B6B'];
     const container = document.body;
     
-    for (let i = 0; i < count; i++) {
+    activeAnimations += actualCount;
+
+    for (let i = 0; i < actualCount; i++) {
         const petal = document.createElement('div');
         petal.style.position = 'fixed';
         petal.style.left = x + 'px';
         petal.style.top = y + 'px';
-        petal.style.width = randomRange(20, 40) + 'px';
-        petal.style.height = randomRange(25, 45) + 'px';
+        petal.style.width = (isMobile ? 15 : 30) + 'px'; // Smaller on mobile
+        petal.style.height = (isMobile ? 18 : 40) + 'px';
         petal.style.background = colors[Math.floor(Math.random() * colors.length)];
         petal.style.borderRadius = '50% 0 50% 0';
         petal.style.opacity = '0.8';
@@ -1084,8 +1111,8 @@ function createRosePetalBurst(x, y, count) {
         
         container.appendChild(petal);
         
-        const angle = (Math.PI * 2 * i) / count;
-        const velocity = randomRange(3, 8);
+        const angle = (Math.PI * 2 * i) / actualCount;
+        const velocity = isMobile ? randomRange(1, 3) : randomRange(3, 8);
         const vx = Math.cos(angle) * velocity;
         const vy = Math.sin(angle) * velocity - randomRange(2, 5);
         const rotation = randomRange(0, 360);
@@ -1125,10 +1152,11 @@ function animateRosePetal(petal, vx, vy, rotation, rotationSpeed, swayAmount) {
             petal.style.opacity = opacity;
         }
         
-        if (posY < window.innerHeight + 100 && opacity > 0) {
-            requestAnimationFrame(update);
-        } else {
+        if (posY > window.innerHeight - 100 && opacity <= 0) {
+            activeAnimations--; // DECREMENT COUNTER
             petal.remove();
+        } else {
+            requestAnimationFrame(update);
         }
     }
     
@@ -1904,7 +1932,15 @@ function initFireworks() {
     });
     
     function launchFirework(targetX, targetY) {
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile && activeAnimations > 30) {
+            return;
+        }
+
         const colors = ['#DC143C', '#FFD700', '#FF6B6B', '#FFB6C1', '#87CEEB', '#98D8C8'];
+
+        activeAnimations += 1;
+
         fireworks.push({
             x: targetX,
             y: window.innerHeight,
