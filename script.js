@@ -817,7 +817,8 @@ function initMiniGame() {
                 updateProgressDisplay();
 
                 SoundSystem.playSound('heart');
-                createSparkleEffect(e.clientX, e.clientY, 15);
+                const isMobile = window.innerWidth <= 768;
+                createSparkleEffect(e.clientX, e.clientY, isMobile ? 8 : 15);
             }
         });
     });
@@ -982,13 +983,18 @@ function initVirtualCake() {
 
                 if (AppState.candlesBlown === candles.length) {
                     const elapsedTime = (Date.now() - firstCandleTime) / 1000;
-                    
+                    const isMobile = window.innerWidth <= 768;
                     setTimeout(() => {
                         wishMessage.style.display = 'block';
-                        
-                        createRosePetalBurst(window.innerWidth / 2, window.innerHeight * 0.6, 150);
-                        createHeartExplosion(window.innerWidth / 2, window.innerHeight * 0.6, 50);
-                        createGoldenDustShimmer();
+                        if (isMobile) {
+                            createRosePetalBurst(window.innerWidth / 2, window.innerHeight / 0.6, 50);
+                            createHeartExplosion(window.innerWidth / 2, window.innerHeight / 0.6, 20);
+                            // NO golden dust on mobile
+                        } else {
+                            createRosePetalBurst(window.innerWidth / 2, window.innerHeight / 0.6, 150);
+                            createHeartExplosion(window.innerWidth / 2, window.innerHeight / 0.6, 50);
+                            createGoldenDustShimmer();
+                        }
                         
                         unlockAchievement('wishes');
                         
@@ -1164,100 +1170,113 @@ function animateRosePetal(petal, vx, vy, rotation, rotationSpeed, swayAmount) {
 }
 
 function createHeartExplosion(x, y, count) {
-    const emojis = ['\u2764\ufe0f', '\ud83d\udc95', '\ud83d\udc96', '\ud83d\udc97', '\ud83d\udc93', '\ud83d\udc9e'];
-    const container = document.body;
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile && activeAnimations > 40) return; // Skip if too many
+  
+  const actualCount = isMobile ? Math.ceil(count / 3) : count; // 66% reduction
+  const emojis = ['❤️', '💕', '💖', '💗', '💓', '💞'];
+  const container = document.body;
+  
+  activeAnimations += actualCount;
+  
+  for (let i = 0; i < actualCount; i++) {
+    const heart = document.createElement('div');
+    heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    heart.style.position = 'fixed';
+    heart.style.left = x + 'px';
+    heart.style.top = y + 'px';
+    heart.style.fontSize = (isMobile ? 12 : 25) + 'px'; // Smaller on mobile
+    heart.style.pointerEvents = 'none';
+    heart.style.zIndex = '9999';
+    heart.style.opacity = '0';
+    container.appendChild(heart);
     
-    for (let i = 0; i < count; i++) {
-        const heart = document.createElement('div');
-        heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        heart.style.position = 'fixed';
-        heart.style.left = x + 'px';
-        heart.style.top = y + 'px';
-        heart.style.fontSize = randomRange(15, 35) + 'px';
-        heart.style.pointerEvents = 'none';
-        heart.style.zIndex = '9999';
-        heart.style.opacity = '0';
-        
-        container.appendChild(heart);
-        
-        const angle = (Math.PI * 2 * i) / count;
-        const velocity = randomRange(2, 6);
-        const vx = Math.cos(angle) * velocity;
-        const vy = Math.sin(angle) * velocity - randomRange(1, 3);
-        
-        animateHeart(heart, vx, vy);
-    }
+    const angle = (Math.PI * 2 * i) / actualCount;
+    const velocity = isMobile ? randomRange(0.5, 1.5) : randomRange(2, 6);
+    const vx = Math.cos(angle) * velocity;
+    const vy = Math.sin(angle) * velocity - randomRange(0.5, 2);
+    animateHeart(heart, vx, vy);
+  }
 }
+
 
 function animateHeart(heart, vx, vy) {
-    let posX = parseFloat(heart.style.left);
-    let posY = parseFloat(heart.style.top);
-    let velocityY = vy;
-    let velocityX = vx;
-    let scale = 0.5;
-    let opacity = 0;
-    let rotation = 0;
-    let phase = 'fadeIn';
-    
-    function update() {
-        if (phase === 'fadeIn') {
-            opacity += 0.05;
-            scale += 0.05;
-            if (opacity >= 1) phase = 'float';
-        } else if (phase === 'float') {
-            velocityY += 0.1;
-            velocityX *= 0.99;
-            
-            posX += velocityX;
-            posY += velocityY;
-            rotation += 2;
-            
-            if (posY > window.innerHeight - 200) phase = 'fadeOut';
-        } else if (phase === 'fadeOut') {
-            opacity -= 0.03;
-            scale -= 0.02;
-        }
-        
-        heart.style.left = posX + 'px';
-        heart.style.top = posY + 'px';
-        heart.style.opacity = opacity;
-        heart.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
-        
-        if (opacity > 0 && posY < window.innerHeight + 50) {
-            requestAnimationFrame(update);
-        } else {
-            heart.remove();
-        }
+  let posX = parseFloat(heart.style.left);
+  let posY = parseFloat(heart.style.top);
+  let velocityY = vy;
+  let velocityX = vx;
+  let scale = 0.5;
+  let opacity = 0;
+  let rotation = 0;
+  let phase = 'fadeIn';
+
+  function update() {
+    if (phase === 'fadeIn') {
+      opacity += 0.05;
+      scale += 0.05;
+      if (opacity >= 1) phase = 'float';
+    } else if (phase === 'float') {
+      velocityY += 0.1;
+      velocityX *= 0.99;
+      posX += velocityX;
+      posY += velocityY;
+      rotation += 2;
+      
+      if (posY > window.innerHeight - 200) {
+        phase = 'fadeOut';
+      }
+    } else if (phase === 'fadeOut') {
+      opacity -= 0.03;
+      scale -= 0.02;
     }
-    
-    update();
+
+    heart.style.left = posX + 'px';
+    heart.style.top = posY + 'px';
+    heart.style.opacity = opacity;
+    heart.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
+
+    if (opacity <= 0 || posY > window.innerHeight + 50) {
+      activeAnimations--; // DECREMENT
+      heart.remove();
+    } else {
+      requestAnimationFrame(update);
+    }
+  }
+
+  update();
 }
 
+
 function createSparkleEffect(x, y, count) {
-    const container = document.body;
-    
-    for (let i = 0; i < count; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.textContent = '\u2728';
-        sparkle.style.position = 'fixed';
-        sparkle.style.left = x + 'px';
-        sparkle.style.top = y + 'px';
-        sparkle.style.fontSize = randomRange(10, 20) + 'px';
-        sparkle.style.pointerEvents = 'none';
-        sparkle.style.zIndex = '9999';
-        sparkle.style.opacity = '1';
-        sparkle.style.filter = 'drop-shadow(0 0 5px #FFD700)';
-        
-        container.appendChild(sparkle);
-        
-        const angle = Math.random() * Math.PI * 2;
-        const velocity = randomRange(2, 5);
-        const vx = Math.cos(angle) * velocity;
-        const vy = Math.sin(angle) * velocity;
-        
-        animateSparkle(sparkle, vx, vy);
-    }
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile && activeAnimations > 50) return; // Skip on mobile if busy
+  
+  const actualCount = isMobile ? Math.ceil(count / 2) : count; // 50% reduction on mobile
+  const container = document.body;
+  
+  activeAnimations += actualCount;
+  
+  for (let i = 0; i < actualCount; i++) {
+    const sparkle = document.createElement('div');
+    sparkle.textContent = '✨';
+    sparkle.style.position = 'fixed';
+    sparkle.style.left = x + 'px';
+    sparkle.style.top = y + 'px';
+    sparkle.style.fontSize = (isMobile ? 10 : 14) + 'px'; // Smaller on mobile
+    sparkle.style.pointerEvents = 'none';
+    sparkle.style.zIndex = '9999';
+    sparkle.style.opacity = '1';
+    sparkle.style.filter = 'drop-shadow(0 0 5px #FFD700)';
+    container.appendChild(sparkle);
+
+    const angle = Math.random() * Math.PI * 2;
+    const velocity = isMobile ? randomRange(0.5, 1.5) : randomRange(2, 5);
+    const vx = Math.cos(angle) * velocity;
+    const vy = Math.sin(angle) * velocity;
+    animateSparkle(sparkle, vx, vy);
+  }
 }
+
 
 function animateSparkle(sparkle, vx, vy) {
     let posX = parseFloat(sparkle.style.left);
@@ -1282,6 +1301,7 @@ function animateSparkle(sparkle, vx, vy) {
         if (life < 60) {
             requestAnimationFrame(update);
         } else {
+            activeAnimations--;
             sparkle.remove();
         }
     }
@@ -1290,53 +1310,59 @@ function animateSparkle(sparkle, vx, vy) {
 }
 
 function createGoldenDustShimmer() {
-    const container = document.body;
-    const count = 200;
-    
-    for (let i = 0; i < count; i++) {
-        setTimeout(() => {
-            const dust = document.createElement('div');
-            dust.style.position = 'fixed';
-            dust.style.left = Math.random() * window.innerWidth + 'px';
-            dust.style.top = '-10px';
-            dust.style.width = randomRange(2, 5) + 'px';
-            dust.style.height = randomRange(2, 5) + 'px';
-            dust.style.background = '#FFD700';
-            dust.style.borderRadius = '50%';
-            dust.style.opacity = randomRange(0.3, 0.8);
-            dust.style.pointerEvents = 'none';
-            dust.style.zIndex = '9999';
-            dust.style.boxShadow = '0 0 5px #FFD700';
-            
-            container.appendChild(dust);
-            animateGoldenDust(dust);
-        }, i * 10);
-    }
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile && activeAnimations > 50) return; // Skip on mobile if busy
+  
+  const container = document.body;
+  const count = isMobile ? 40 : 200; // 80% reduction on mobile
+  
+  activeAnimations += count;
+  
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const dust = document.createElement('div');
+      dust.style.position = 'fixed';
+      dust.style.left = Math.random() * window.innerWidth + 'px';
+      dust.style.top = '-10px';
+      dust.style.width = randomRange(isMobile ? 1 : 2, isMobile ? 3 : 5) + 'px';
+      dust.style.height = randomRange(isMobile ? 1 : 2, isMobile ? 3 : 5) + 'px';
+      dust.style.background = '#FFD700';
+      dust.style.borderRadius = '50%';
+      dust.style.opacity = randomRange(0.3, 0.8);
+      dust.style.pointerEvents = 'none';
+      dust.style.zIndex = '9999';
+      dust.style.boxShadow = '0 0 5px #FFD700';
+      container.appendChild(dust);
+
+      animateGoldenDust(dust);
+    }, i * (isMobile ? 20 : 10)); // Stagger less on mobile
+  }
 }
 
 function animateGoldenDust(dust) {
-    let posY = -10;
-    let posX = parseFloat(dust.style.left);
-    const speed = randomRange(0.5, 2);
-    const sway = randomRange(10, 30);
-    let offset = Math.random() * Math.PI * 2;
-    
-    function update() {
-        posY += speed;
-        offset += 0.05;
-        
-        dust.style.top = posY + 'px';
-        dust.style.left = (posX + Math.sin(offset) * sway) + 'px';
-        
-        if (posY < window.innerHeight) {
-            requestAnimationFrame(update);
-        } else {
-            dust.remove();
-        }
+  let posY = -10;
+  let posX = parseFloat(dust.style.left);
+  const speed = randomRange(0.3, 1); // Slower on mobile too
+  const sway = randomRange(5, 15);
+  let offset = Math.random() * Math.PI * 2;
+
+  function update() {
+    posY += speed;
+    offset += 0.05;
+    dust.style.top = posY + 'px';
+    dust.style.left = (posX + Math.sin(offset) * sway) + 'px';
+
+    if (posY < window.innerHeight) {
+      requestAnimationFrame(update);
+    } else {
+      activeAnimations--; // DECREMENT
+      dust.remove();
     }
-    
-    update();
+  }
+
+  update();
 }
+
 
 function createFloatingHearts() {
     const container = document.body;
@@ -1432,6 +1458,7 @@ function initBackgroundMusicAutoPlay() {
         if (!musicStarted) {
             music.play().catch(e => console.log('Music play blocked:', e));
             musicStarted = true;
+            unlockAchievement('musiclover');
             if (musicToggle) musicToggle.classList.add('active');
         }
     };
