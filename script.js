@@ -99,9 +99,9 @@ const reasons = [
   "You're genuine and real in a way that's rare",
   "Every conversation with you feels effortless",
   "You make me laugh until my stomach hurts",
-  "The way we just click, no forcing required",
+  "Your eyes and smile are my favorite view",
   "You inspire me to be better, every single day",
-  "Your kindness and authenticity are unmatched"
+  "Our love, authenticity, and transparency are unmatched"
 ];
 
 const balloonWishes = [
@@ -222,7 +222,8 @@ function initHeroSection() {
     const startBtn = document.getElementById('startJourneyBtn');
     const heroParticles = document.getElementById('heroParticles');
 
-    createFloatingParticles(heroParticles, ['\u2764\ufe0f', '\u2728', '\u2b50', '\ud83d\udc95', '\ud83c\udf1f'], 20);
+    const isMobileHero = window.innerWidth <= 768;
+    createFloatingParticles(heroParticles, ['🎂', '🎈', '💕', '✨', '💑', '🎉', '⭐'], isMobileHero ? 10 : 20);
 
     giftBox.addEventListener('click', () => {
         if (!AppState.giftOpened) {
@@ -612,14 +613,20 @@ function initBackToTop() {
 
 // Particles for various sections
 function initParticles() {
-    const reasonsParticles = document.getElementById('reasonsParticles');
-    const welcomeParticles = document.getElementById('welcomeParticles');
-    const countdownParticles = document.getElementById('countdownParticles');
-    
-    createFloatingParticles(reasonsParticles, ['\u2b50', '\u2728', '\ud83d\udcab', '\ud83c\udf1f'], 15);
-    createFloatingParticles(welcomeParticles, ['\ud83c\udf89', '\ud83c\udf88', '\ud83c\udf8a'], 12);
-    createFloatingParticles(countdownParticles, ['\u23f0', '\ud83c\udf82', '\ud83c\udf81'], 10);
+  const reasonsParticles = document.getElementById('reasonsParticles');
+  const welcomeParticles = document.getElementById('welcomeParticles');
+  const countdownParticles = document.getElementById('countdownParticles');
+
+  const isMobile = window.innerWidth <= 768;
+  const reasonCount = isMobile ? 8 : 15;
+  const welcomeCount = isMobile ? 6 : 12;
+  const countdownCount = isMobile ? 5 : 10;
+
+  createFloatingParticles(reasonsParticles, ['🎂', '🎈', '💕', '✨', '🎁'], reasonCount);
+  createFloatingParticles(welcomeParticles, ['😘', '💐', '💝', '🎉'], welcomeCount);
+  createFloatingParticles(countdownParticles, ['🔥', '🎊', '🎁'], countdownCount);
 }
+
 
 // Memory Cards
 function initMemoryCards() {
@@ -898,10 +905,10 @@ function showQuizResults() {
     document.getElementById('quizFinalScore').textContent = AppState.quizScore;
 
     const messages = [
-        "You know Anna so well! FLAWLESS VICTORY! \ud83c\udf1f",
+        "You know us so well! \ud83c\udf1f",
         "Great job! You really pay attention! \ud83d\udc95",
         "Not bad! There's always more to learn! \ud83d\ude0a",
-        "Keep getting to know Anna better! \ud83c\udf89"
+        "Keep at it! \ud83c\udf89"
     ];
 
     const messageIndex = AppState.quizScore === 5 ? 0 : 
@@ -1911,7 +1918,8 @@ function initFireworks() {
     }
     
     function createParticles(x, y, color) {
-        const particleCount = 80;
+        const isMobile = window.innerWidth <= 768;
+        const particleCount = isMobile ? 40 : 80;
         
         createExplosionPulse(x, y, color);
         

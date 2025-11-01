@@ -2111,6 +2111,27 @@ body::before {
     gap: 30px;
     padding: 20px;
 }
+@media (max-width: 768px) {
+  .reasons-container {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 15px;
+  }
+
+  .reason-card {
+    min-height: 150px !important;
+    padding: 25px 15px !important;
+  }
+
+  .reason-number {
+    font-size: 2rem !important;
+  }
+
+  .reason-text {
+    font-size: 1rem !important;
+  }
+}
+
 
 .reason-card {
     background: linear-gradient(135deg, var(--white) 0%, var(--cream) 100%);
@@ -3513,14 +3534,45 @@ body::before {
 }
 
 .balloons-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 30px;
-    flex-wrap: wrap;
-    min-height: 500px;
-    position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 30px;
+  flex-wrap: wrap;
+  min-height: 500px;
+  position: relative;
+  overflow: visible;
+  padding: 20px 10px;
 }
+
+@media (max-width: 768px) {
+  .balloons-container {
+    gap: 15px;
+    min-height: 600px;
+    padding: 30px 5px;
+  }
+
+  .balloon-item {
+    animation-delay: 0s !important;
+  }
+
+  .balloon-shape {
+    width: 50px !important;
+    height: 65px !important;
+  }
+
+  .balloon-wish {
+    font-size: 0.8rem !important;
+    padding: 10px 12px !important;
+    white-space: normal !important;
+    max-width: 80px;
+  }
+
+  .balloon-string {
+    height: 60px !important;
+  }
+}
+
 
 .balloon-item {
     cursor: pointer;
